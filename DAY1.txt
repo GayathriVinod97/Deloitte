@@ -1,0 +1,115 @@
+CREATE TABLE CUSTOMER
+(
+CUSTOMERID INTEGER,
+CUSTOMERNAME VARCHAR2(20),
+CUSTOMERADDRESS VARCHAR(20),
+BILLAMOUNT INTEGER
+)
+ INSERT INTO CUSTOMER VALUES(101,'JAY','PUNE',6200);
+ INSERT INTO CUSTOMER VALUES(102,'TARUN','PUNE',1200);
+ INSERT INTO CUSTOMER VALUES(103,'KALPANA','DELHI',200);
+ INSERT INTO CUSTOMER VALUES(104,'YAMINI','AGRA',62060);
+
+SELECT * FROM CUSTOMER;
+DESC CUSTOMER;
+SELECT CUSTOMERNAME, BILLAMOUNT FROM CUSTOMER;
+SELECT DISTINCT CUSTOMERADDRESS FROM CUSTOMER;
+SELECT CUSTOMERNAME, BILLAMOUNT+10 AS NEWBILL
+ FROM CUSTOMER;
+SELECT 'Mr/Ms '||customername||' pays '||billamount from customer;
+select * from customer where billamount>2000;
+select * from customer where customeraddress='PUNE' and billamount<5000;
+select * from customer where customeraddress NOT in('PUNE','DELHI','MUMBAI');
+INSERT INTO CUSTOMER VALUES(105,'MOHAN',null,9200);
+select * from customer;
+insert into customer (customername) values('Tufail');
+select * from customer;
+CREATE TABLE EMPLOYEEE
+(
+EMPLOYEEID INTEGER NOT NULL,
+EMPLOYEENAME VARCHAR2(20)NOT NULL,
+EMPLOYEEADDRESS VARCHAR (20),
+SALARY INTEGER NOT NULL
+)
+INSERT INTO EMPLOYEEE VALUES(10001,'UDAY',NULL,220);
+SELECT * FROM EMPLOYEEE;
+select * from customer where customername like '%i%';
+select * from customer where customername like '_a_';
+select * from customer; 
+select * from customer order by customername desc;
+create table Student_f
+ (
+    Roll varchar(10),
+    Name varchar(20),
+    Address varchar(20),
+    Marks number
+)
+insert into Student_F values('1','Tufail','Chennai',null);
+insert into Student_F values('2','Amit','Chennai',null);
+insert into Student_F values('3','Tarun','Chennai',98);
+select * from dual;
+select concat(name,roll) from Student_F where roll=1;
+select substr('helloworld', 1,6) from dual;
+select length('helo') from dual;
+select instr('helo','e') from dual;
+select lpad(2000,5,'*') from dual;
+select trim('m' from 'mmrgmvmmm') from dual;
+select sysdate+120 from dual;
+create table emp1
+ (
+    eid integer,
+    name varchar(20),
+    dob date,
+    doj date
+)
+insert into emp1 values(1,'jay','02/01/1997','06/01/2012');
+insert into emp1 values(2,'mohan','08/01/2000','08/03/2012');
+insert into emp1 values(3,'ray','03/06/1999','06/01/2013');
+insert into emp1 values(4,'may','04/01/2001','08/23/2014');
+select * from emp1;
+select name,round(months_between(sysdate,dob)/12) from emp1;
+select name,round(months_between(doj,dob)/12) from emp1;
+select last_day(sysdate) from dual;
+insert into emp1 values(5,'kay',to_date('2003/05/03','yyyy/mm/dd'),to_date('2007/03/08','yyyy/mm/dd'));
+select * from emp1;
+select nvl(marks, 0) from Student_F;
+select nvl2(marks,roll*3,roll*5) from Student_F;
+select nullif(customerid,billamount) from customer;
+select roll, coalesce(to_number(roll),marks,10) from Student_F;
+
+insert into emp1 values(6,'say',to_date('1998/05/03 21:02:44','yyyy/mm/dd hh24:mi:ss'),to_date('2007/03/08 21:02:44','yyyy/mm/dd hh24:mi:ss'));
+create table customer10
+(
+cid integer primary key,
+cname varchar2(20) not null,
+caddress varchar(20) check (caddress in ('Delhi', 'Mumbai','Kolkata')),
+billamount integer check( billamount>0)
+)
+insert into customer10 values (100,'Sandeep', 'Mumbai',20);
+insert into customer10 values (100,'Sandeep', 'Mumbai',20);
+create table customer20
+(
+cid integer constraint pkcid primary key ,
+cname varchar2(20) constraint cnamenotnull not null,
+caddress varchar(20) check (caddress in ('Delhi', 'Mumbai','Kolkata')),
+billamount integer constraint checkbillamount check( billamount>0)
+
+
+)
+create table customer30
+(
+cid integer   ,
+cname varchar2(20) constraint cnamenotnull1 not null,
+caddress varchar(20) check (caddress in ('Delhi', 'Mumbai','Kolkata')),
+billamount integer constraint checkbillamount1 check( billamount>0),
+email varchar(20),
+constraint pkcust primary key(cid,email)
+)
+
+
+)
+insert into customer30 values (100,'Sandeep', 'Mumbai',20,'sandeep');
+insert into customer30 values (100,'Sandeep', 'Mumbai',20,'sandeep2');
+insert into customer30 values (100,'Sandeep', 'Mumbai',20,'sandeep');
+
+select * from customer30;
