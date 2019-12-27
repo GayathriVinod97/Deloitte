@@ -1,0 +1,40 @@
+Assignment 2
+
+create table Employee
+(
+EmployeeId integer constraint pk primary key,
+EmployeeName varchar2(20) constraint notnull not null,
+EmployeeAddress varchar2(20) check (employeeaddress not in ('Newyork', 'London' , 'Paris')),
+salary integer constraint salcheck check ( salary between 20000 and 30000),
+companyaddress varchar2(20) default 'ASV Suntech Park'
+);
+
+
+insert into employee values (1,'Jay','Mumbai',25000,default);
+
+insert into employee values (2,'Neha','Rome',23500,default);
+------------------------------------------------------------------------------------------------------------------------------------
+
+select * from employee
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+create table salary
+(
+employeeid integer primary key,
+employeepf integer constraint notneg check (employeepf >=0),
+employeehra integer constraint negval check (employeehra>=0)
+
+);
+alter table salary add constraint emp_sal FOREIGN KEY (employeeid) REFERENCES employee(employeeid);
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+create table citizen
+(
+cid integer constraint pkcitizen primary key,
+citizenDOB date,
+citizenDOD date constraint dod_err check (citizenDOD >citizenDOB)
+);

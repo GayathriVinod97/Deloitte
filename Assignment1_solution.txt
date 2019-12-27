@@ -1,0 +1,51 @@
+create table Employee
+(
+EmployeeId integer,
+EmployeeName varchar2(20),
+EmployeeAddress varchar2(20),
+DOB DATE,
+doj date,
+salary integer
+);
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+insert into employee values (1,'Jay','Mumbai',to_date('01/10/1997', 'dd/mm/yyyy'),to_date('01/01/2019', 'dd/mm/yyyy'),50000);
+insert into employee values (2,'May','Agra',to_date('30/08/1995', 'dd/mm/yyyy'),to_date('21/12/2017', 'dd/mm/yyyy'),10000);
+delete from employee where employeename='Jay';
+insert into employee values (3,'Mohan','Pune',to_date('01/12/2000', 'dd/mm/yyyy'),to_date('17/11/2020', 'dd/mm/yyyy'),700000);
+insert into employee values (4,'Ria','Kolkata',to_date('16/07/1997', 'dd/mm/yyyy'),to_date('21/07/2018', 'dd/mm/yyyy'),15000);
+insert into employee values (5,'Neha','Delhi',to_date('04/09/1998', 'dd/mm/yyyy'),to_date('04/03/2019', 'dd/mm/yyyy'),30000);
+------------------------------------------------------------------------------------------------------------------------------------
+
+select * from employee ;
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+
+select employeename from employee where salary>20000;
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+
+select employeename from employee where (employeeaddress like'%a') or (employeeaddress like'%r') or (employeeaddress like'%p');
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+update employee set salary=salary + ( 0.2 * salary);
+------------------------------------------------------------------------------------------------------------------------------------
+
+
+delete from employee where salary<5000;
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+
+alter table employee
+add Email varchar2(20);
+ 
+update  employee set email ='j@gmail.com' where employeeid=1;
+update  employee set email ='m@gmail.com' where employeeid=2;
+update  employee set email ='moh@gmail.com' where employeeid=3;
+update  employee set email ='r@gmail.com' where employeeid=4;
+update  employee set email ='n@gmail.com' where employeeid=5;

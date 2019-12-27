@@ -1,0 +1,307 @@
+create table emp
+(
+emp_no integer primary key,
+empname varchar2(20) not null,
+salary integer,
+designation varchar2(20),
+dept_no integer
+)
+create table dept
+(
+dept_no integer primary key,
+dept_name varchar2(20),
+location varchar2(20) not null
+)
+alter table emp add constraint fkempdept foreign key(dept_no) references dept(dept_no);
+insert into emp values(15,'Yati',98000,'Developer',100); //error
+insert into dept values(100,'HR','Mumbai');
+
+create table Product
+(
+productid integer primary key,
+product_name varchar2(20),
+price integer,
+qoh integer
+)
+create table Orders
+(
+orderid integer primary key,
+orderdate date,
+productid integer
+)
+select * from Orders;
+alter table Orders add constraint fkordprod foreign key (productid) references Product(productid);
+insert into Product values(1,'book',10,10);
+insert into Product values(2,'pen',5,10);
+insert into Orders values(1,to_date('2019/05/03 ','yyyy/mm/dd'),1);
+insert into Orders values(2,to_date('2019/05/03 ','yyyy/mm/dd'),4); //fkordprod violated
+insert into Orders values(2,to_date('2019/05/23 ','yyyy/mm/dd'),1);
+select * from product;
+select * from orders;
+
+CREATE TABLE SECTION (
+SECTION_ID INTEGER CONSTRAINT S_ID CHECK (SECTION_ID > 0),
+SECTION_NAME CHAR(30) CONSTRAINT S_NAME NOT NULL,
+BOOK_COUNT INTEGER,
+CONSTRAINT SECT_PRIME PRIMARY KEY (SECTION_ID))
+
+CREATE TABLE BOOK
+(
+ISBN INTEGER CONSTRAINT B_ISBN CHECK (ISBN BETWEEN 1 AND 2000),
+TITLE VARCHAR2(200) CONSTRAINT B_TITLE NOT NULL,
+AUTHOR VARCHAR2(50) CONSTRAINT B_AUTH NOT NULL,
+LENT_DATE DATE,
+RETURNED_DATE DATE,
+TIMES_LENT NUMBER(6),
+SECTION_ID NUMBER(3),
+CONSTRAINT BOOK_PRIME PRIMARY KEY (ISBN),
+CONSTRAINT BOOK_SECT FOREIGN KEY (SECTION_ID) REFERENCES SECTION(SECTION_ID)
+ON DELETE CASCADE)
+
+INSERT INTO SECTION values(1,'ABC',78);
+INSERT INTO SECTION values(2,'XYZ',65);
+ 
+insert into BOOK values(1,'java','james',to_date('3/3/09','mm/dd/yy'),to_date('3/4/09','mm/dd/yy'),10,1);
+delete from section where section_id=1;
+select * from book;  //row where section id 1 is deleted.
+
+
+---------------------------------------------------------------------
+select constraint_name
+from user_constraint
+where table_name='Orders'
+and constaint_type= 'P';
+select * from emp;
+select * from dept
+select empname, dept_name from emp join dept on emp.dept_no=dept.dept_no;
+
+--------------------------------------------------------------------------------
+create table Suppliers
+(
+   supplier_id varchar(20),
+   supplier_name varchar(20)
+)
+/
+
+create table Order1
+(
+  order_id varchar(20),
+   supplier_id varchar(20),
+   order_date date
+)
+/
+
+insert into Suppliers values('10000','IBM')
+insert into Suppliers values('10001','Hewlett Packard')
+insert into Suppliers values('10002','Microsoft')
+insert into Suppliers values('10003','TCS')
+
+insert into Order1 values('1','10000',to_date('3/3/09','mm/dd/yy'))
+insert into Order1 values('2','10000',to_date('7/5/10','mm/dd/yy'))
+insert into Order1 values('3','10001',to_date('12/8/10','mm/dd/yy'))
+insert into Order1 values('4','20001',to_date('12/8/10','mm/dd/yy'))
+
+select * from Suppliers
+select * from Order1
+
+select s.supplier_id , s.supplier_name, o.order_date
+from suppliers s, order1 o
+where s.supplier_id=o.supplier_id;
+
+select suppliers.supplier_id , supplier_name, order_date
+from suppliers , order1
+where suppliers.supplier_id= order1.supplier_id
+
+-----------------------------------------------------------
+select s.supplier_id, s.supplier_name, o.order_date   //full outer join 
+from suppliers s full outer join order1 o
+on s.supplier_id= o.supplier_id
+
+select s.supplier_id, s.supplier_name, o.order_date
+from suppliers s left outer join order1 o
+on s.supplier_id= o.supplier_id
+
+select s.supplier_id, s.supplier_name, o.order_date
+from suppliers s right outer join order1 o
+on s.supplier_id= o.supplier_id
+--------------------------------------------------------------------------------
+select s.supplier_id, s.supplier_name, o.order_date   //left
+from suppliers s , order1 o
+where s.supplier_id= o.supplier_id(+)
+
+select s.supplier_id, s.supplier_name, o.order_date   //right
+from suppliers s , order1 o
+where s.supplier_id(+)= o.supplier_id
+
+----------------------------------------------
+select * from employees
+select e1.last_name||' works for '||e2.last_name
+"Employees and their Managers"
+from employees e1, employees e2 where e1.manager_id=e2.employee_id;             //self join
+---------------------------------------------------------------------
+select e1.last_name||' works for '||e2.last_name
+"Employees and their Managers"
+from employees e1, employees e2 where e1.manager_id=e2.employee_id and e1.first_name='Neena';
+
+-----------------------------------------------------------------
+select manager_id, sum(salary) from employees
+group by manager_id
+
+-------------------------------------------------------------------
+
+select * from stu
+select * from fees
+
+-------------
+update fees set amount =10800 where roll=1;
+-------------
+select roll from fees where amount=10800;
+select name from stu where roll=2;
+------------------
+
+
+select name from stu where roll in (select roll from fees where amount=10800);
+--------------------------------------------
+select name from stu where exists (select roll from fees where amount =10800);
+
+-------------------------------
+select roll , name from stu where roll> any(select roll from stu);        //roll 2 and 3
+select roll , name from stu where roll> all(select roll from stu);
+select  amount from fees where roll=(select roll from stu where name='Sai');  //roll 3
+
+
+----------------------------------------------
+create table emp100
+(
+empid integer,
+empname varchar2(20),
+sal integer,
+deptno integer
+)
+
+insert into emp100 values(1,'Tufail',980000,1);
+insert into emp100 values(2,'Ahmed',80000,1);
+insert into emp100 values(3,'Khan',90000,2);
+insert into emp100 values(4,'Tarun',20000,2);
+insert into emp100 values(5,'Neha',950000,2);
+
+update emp100 a                                                         // update salary of employees whose salary is less than dept avg to dept avg
+set a.sal=(select avg(sal) from emp100 b where a.deptno=b.deptno)
+where sal< (select avg(sal) from emp100 c where a.deptno= c.deptno)
+
+select * from emp100;
+
+delete from emp100 a
+where sal=(select max(sal) from emp100 b where a.deptno=b.deptno);     // delete person with highesr salary from each dept
+select * from emp100;
+
+-------------------------------------------------
+insert into fees values(10,89000);
+savepoint s1;
+insert into fees values(11,9000);
+select * from fees;
+rollback ;
+
+
+
+
+assignment 1
+
+create table Employee
+(
+EmployeeId integer,
+EmployeeName varchar2(20),
+EmployeeAddress varchar2(20),
+DOB DATE,
+doj date,
+salary integer
+)
+truncate table employee
+
+insert into employee values (1,'Jay','Mumbai',to_date('01/10/1997', 'dd/mm/yyyy'),to_date('01/01/2019', 'dd/mm/yyyy'),50000);
+insert into employee values (2,'May','Agra',to_date('30/08/1995', 'dd/mm/yyyy'),to_date('21/12/2017', 'dd/mm/yyyy'),10000);
+delete from employee where employeename='Jay';
+insert into employee values (3,'Mohan','Pune',to_date('01/12/2000', 'dd/mm/yyyy'),to_date('17/11/2020', 'dd/mm/yyyy'),700000);
+insert into employee values (4,'Ria','Kolkata',to_date('16/07/1997', 'dd/mm/yyyy'),to_date('21/07/2018', 'dd/mm/yyyy'),15000);
+insert into employee values (5,'Neha','Delhi',to_date('04/09/1998', 'dd/mm/yyyy'),to_date('04/03/2019', 'dd/mm/yyyy'),30000);
+------------------------------------------------------------------------------------------------------------------------------------
+
+select * from employee
+
+--------------------------------------------------------------------------------------
+
+select employeename from employee where salary>20000;
+
+-------------------------------------------------------------------------------------
+
+select employeename from employee where (employeeaddress like'%a') or (employeeaddress like'%r') or (employeeaddress like'%p');
+
+------------------------------------------------------------------------------------------
+
+update employee set salary=salary + ( 0.2 * salary);
+---------------------------------------------------------------------------
+
+delete from employee where salary<5000;
+
+---------------------------------------------------
+
+alter table employee
+add Email varchar2(20)
+ 
+update  employee set email ='j@gmail.com' where employeeid=1;
+update  employee set email ='m@gmail.com' where employeeid=2;
+update  employee set email ='moh@gmail.com' where employeeid=3;
+update  employee set email ='r@gmail.com' where employeeid=4;
+update  employee set email ='n@gmail.com' where employeeid=5;
+
+---------------------------------------------------------------
+
+assignment 2
+
+create table Employee
+(
+EmployeeId integer constraint pk primary key,
+EmployeeName varchar2(20) constraint notnull not null,
+EmployeeAddress varchar2(20) check (employeeaddress not in ('Newyork', 'London' , 'Paris')),
+salary integer constraint salcheck check ( salary between 20000 and 30000),
+companyaddress varchar2(20) default 'ASV Suntech Park'
+)
+
+
+insert into employee values (1,'Jay','Mumbai',25000,default);
+
+insert into employee values (2,'Neha','Rome',23500,default);
+------------------------------------------------------------------------------------------------------------------------------------
+
+select * from employee
+
+--------------------------------------------------------------------------------------
+drop table salary;
+create table salary
+(
+employeeid integer primary key,
+employeepf integer constraint notneg check (employeepf >=0),
+employeehra integer constraint negval check (employeehra>=0)
+
+)
+create table salary
+(
+employeeid integer primary key,
+employeepf integer constraint notneg check (employeepf >=0),
+employeehra integer constraint negval check (employeehra>=0)
+
+)
+alter table salary add constraint emp_sal FOREIGN KEY (employeeid) REFERENCES employee(employeeid);
+
+alter table salary add constraint emp_sal FOREIGN KEY (employeeid) REFERENCES employee(employeeid);
+
+create table citizen
+(
+cid integer constraint pkcitizen primary key,
+citizenDOB date,
+citizenDOD date constraint dod_err check (citizenDOD >citizenDOB)
+)
+
+
+
+
