@@ -35,6 +35,7 @@ alter table salary add constraint emp_sal FOREIGN KEY (employeeid) REFERENCES em
 create table citizen
 (
 cid integer constraint pkcitizen primary key,
-citizenDOB date,
-citizenDOD date constraint dod_err check (citizenDOD >citizenDOB)
+citizenDOB date constraint doberr,
+citizenDOD date ,
+constraint dod_err check (citizenDOD >=citizenDOB)
 );
