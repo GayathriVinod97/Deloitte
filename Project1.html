@@ -6,20 +6,17 @@ function validation()
 {
   var username=document.getElementById("username").value;
   var spousename=document.getElementById("spousename").value;
-  //var gender=document.getElementsByName("gender").value;
-   //alert("hello");
-   //alert(username);
-   //alert(spousename);
+ 
    usernameerror=document.getElementById("usernameerror");
    gendererror=document.getElementById("gendererror");
    commentserror=document.getElementById("commentserror");
     var gender = document.getElementsByName('gender');
-    //document.write(gender.length); 
+    
               for(i = 0; i < gender.length; i++) { 
                 if(gender[i].checked) 
                    var c=gender[i].value; 
             } 
-  // alert(c);
+
     var comments = document.getElementsByName('comments'); 
               
             for(i = 0; i < comments.length; i++) { 
@@ -27,21 +24,11 @@ function validation()
                    var d=comments[i].value; 
             }
       
-   // alert(d);
-   //----------------------------------------------------------------------------------------
+  
      if(username.length==0){
        usernameerror.innerHTML="please enter the username";
       }
-    // else if(username.length!=0)
-      //  usernameerror.innerHTML="Name : "+username;
-     //else if(c.length==0)
-       // gendererror.innerHTML="please enter your gender";
-     //else if(c.length!=0)
-        //gendererror.innerHTML="Your Gender is : "+c;
-     //else if(d.length==0)
-       //   commentserror.innerHTML="please enter thecomments";
-      //else if(d.length!=0)
-        //      commentserror.innerHTML="Your comment is : "+d;  
+   
        else
             usernameerror.innerHTML="Your Name : "+username;
             //alert("success");
