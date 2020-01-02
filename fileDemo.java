@@ -7,12 +7,15 @@ public class fileDemo {
 	
 	File file= new File("C:\\Deloitte\\Core java\\SecondProject\\src\\Batch\\BatchMates.txt");
 	
-	file.createNewFile();
+	
 	File folder2= new File("C:\\Deloitte\\Core java\\SecondProject\\src\\Batch");
-	String[] all= folder2.list();
-	for (String a : all) {
-		System.out.println(a);
+	if(file.exists()) {
+		file.delete();
 	}
+	else {
+		file.createNewFile();
+	
+	
 	File[] file1= folder2.listFiles();
 	for(File file2 : file1 ) {
 		if(file2.isFile()) {
@@ -26,7 +29,7 @@ public class fileDemo {
 	
 	}	
 	
-	
+	}
 
 	}
 

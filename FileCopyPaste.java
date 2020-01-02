@@ -27,6 +27,7 @@ public class FileCopyPaste {
 			}
 			reader.close();
 			fw.close();
+			System.out.println("\""+copy+"\""+" successfully copied to "+"\""+paste+"\"");
 			
 		
 		}
