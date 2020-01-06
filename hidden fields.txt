@@ -1,0 +1,127 @@
+authenticate servlet
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet implementation class AuthenticateServlet
+ */
+public class AuthenticateServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public AuthenticateServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see Servlet#init(ServletConfig)
+	 */
+	
+
+	/**
+	 * @see HttpServlet#service(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String username= request.getParameter("username");
+		String password= request.getParameter("password");
+		PrintWriter out= response.getWriter();
+		out.println("<h2>Welcome "+username);
+		out.println("<h2>You are being authenticated</h2>");
+		Cookie allCookies[] = request.getCookies();
+		boolean alreadyVisited= false;
+		if(allCookies!=null) {
+			for(Cookie c : allCookies) {
+				if(c.getName().equals(username)) {
+					alreadyVisited=true;
+					break;
+				}
+			}
+		}
+		out.println("<h1>Successfully authenticated");
+		if(! alreadyVisited) {
+			out.println("<h2>Welcome you are a first time visitor, "+username);
+			Cookie cookie = new Cookie(username,username);
+			response.addCookie(cookie);
+		}
+		else {
+			out.println("<h1> Welcome, you have already visited my website");
+		}
+		out.println("<h1><form action='WelcomeServlet'>");
+		out.println("<h1> Wife Name <input type='text' name= 'wifename' ");
+		out.println("<h1> <input type='hidden' name= 'username' value=" + username+">");
+		out.println("<h1><input type= 'submit' value='Enter'>");
+		out.println("<h1> </form>");
+		
+		
+	//	if(username.startsWith("T")) {
+			//out.println("h2><a href=Item.html>Item</a>");
+			RequestDispatcher  dispatcher= request.getRequestDispatcher("WelcomeServlet");
+			dispatcher.include(request, response);
+	//	}
+		//else {
+			//out.println("invalid username");
+			//out.println("<h2><a href=index.html>Home</a>");
+		//	response.sendRedirect("loginform3.html");
+		//}
+		
+	}
+
+}
+welcome servlet
+
+package com.shopping.deloitte.controller;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+/**
+ * Servlet implementation class WelcomeServlet
+ */
+public class WelcomeServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public WelcomeServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#service(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String username=request.getParameter("username");
+		PrintWriter out= response.getWriter();
+		String wifeName= request.getParameter("wifename");
+		//set session attribute with username value
+		//HttpSession session = request.getSession();
+		//session.setAttribute("currentBuyer", username);
+	//	out.println("<h2"+)
+		out.println("<h2>"+username+ " purchasing for "+ wifeName);
+		out.println("<h2>Successfully authenticated "+username);
+		
+		 out.println("<h3><a href=Item.html> Select Products</a>");
+	}
+
+}
